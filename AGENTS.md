@@ -27,19 +27,19 @@ Requires **Obsidian 1.10.2+** (the Bases view API). `isDesktopOnly: true`.
 ## Common commands
 
 ```bash
-npm run dev          # esbuild watch (inline sourcemap, unminified)
-npm run build        # svelte-check type-check + production build (minified, writes main.js)
-npm run svelte-check # type-check only, no bundling
-npm run version      # version-bump.mjs syncs manifest.json / versions.json
+pnpm run dev          # esbuild watch (inline sourcemap, unminified)
+pnpm run build        # svelte-check type-check + production build (minified, writes main.js)
+pnpm run svelte-check # type-check only, no bundling
+pnpm run version      # version-bump.mjs syncs manifest.json / versions.json
 ```
 
 - **No test framework.** The only way to verify a running build is manual
   testing: copy `main.js` / `manifest.json` / `styles.css` into
   `<Vault>/.obsidian/plugins/task-manager-bases-view/`, reload Obsidian, enable.
-- **No lint script.** Type-checking is via `svelte-check` (CI runs `npm run build`).
-- For a sanity check after editing, run `npm run build` (includes the type-check),
+- **No lint script.** Type-checking is via `svelte-check` (CI runs `pnpm run build`).
+- For a sanity check after editing, run `pnpm run build` (includes the type-check),
   not just `dev`.
-- CI (`.github/workflows/ci.yml`) runs `npm run build` on Node 24; pushing a
+- CI (`.github/workflows/ci.yml`) runs `pnpm run build` on Node 24; pushing a
   tag triggers `release.yml`, which builds, attests and publishes the artifacts.
 
 ## Tech stack notes

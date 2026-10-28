@@ -73,9 +73,9 @@ The plugin is a thin renderer: change frontmatter / Bases config / drag → Base
 
 ### Build from source
 ```bash
-npm install
-npm run dev      # watch build → main.js
-npm run build    # svelte-check + production bundle
+pnpm install
+pnpm run dev      # watch build → main.js
+pnpm run build    # svelte-check + production bundle
 ```
 Outputs `main.js` (+ `manifest.json`, `styles.css`) in the project root.
 

@@ -81,9 +81,9 @@ Das Plugin ist eine dünne Darstellungsschicht: Frontmatter, Bases-Konfiguration
 ### Aus dem Quellcode bauen
 
 ```bash
-npm install
-npm run dev      # Beobachtungsmodus → main.js
-npm run build    # Svelte-Typprüfung + Produktions-Bundle
+pnpm install
+pnpm run dev      # Beobachtungsmodus → main.js
+pnpm run build    # Svelte-Typprüfung + Produktions-Bundle
 ```
 
 `main.js`, `manifest.json` und `styles.css` liegen anschließend im Projektstamm.

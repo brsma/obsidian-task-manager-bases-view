@@ -70,9 +70,9 @@
 
 ### 从源码构建
 ```bash
-npm install
-npm run dev      # 监听构建 → main.js
-npm run build    # svelte-check + 生产打包
+pnpm install
+pnpm run dev      # 监听构建 → main.js
+pnpm run build    # svelte-check + 生产打包
 ```
 产物 `main.js`（+ `manifest.json`、`styles.css`）位于项目根目录。
 
