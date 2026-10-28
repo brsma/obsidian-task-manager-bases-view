@@ -9,8 +9,14 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 - The plugin is no longer desktop-only and can be installed on Obsidian mobile.
-  Touch support is still being refined: kanban card menus are not yet reachable
-  by touch.
+
+### Added
+
+- On mobile, kanban cards show a ⋯ button that opens the card menu (move to
+  column, archive), since touch has no right-click.
+- Long-pressing a calendar block on a touch screen opens its menu (open, edit,
+  delete).
+- Larger resize handles for timeline bars and calendar blocks on touch screens.
 
 ### Fixed
 

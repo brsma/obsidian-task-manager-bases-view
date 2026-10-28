@@ -1,8 +1,10 @@
 <script lang="ts">
-	import type { BasesEntry, BasesPropertyId } from "obsidian";
+	import { type BasesEntry, type BasesPropertyId, Platform } from "obsidian";
 	import type { KanbanContext } from "./state.svelte";
 	import { setKanbanDrag } from "./drag.svelte";
 	import { renderValue } from "../shared/value-render";
+	import { icon } from "../shared/icon";
+	import { t } from "../i18n.svelte";
 
 	let {
 		entry,
@@ -75,6 +77,15 @@
 	ondragstart={onDragStart}
 	ondragend={onDragEnd}
 >
+	{#if Platform.isMobile && context.contextMenu}
+		<!-- Touch has no right-click: the same card menu, behind a visible button. -->
+		<button
+			class="tm-icon-btn tm-card-menu"
+			aria-label={t("moreOptions")}
+			onclick={onContextMenu}
+			use:icon={"more-horizontal"}
+		></button>
+	{/if}
 	<div class="tm-card-title">{entry.file.basename}</div>
 	{#if context.properties.length > 0}
 		<div class="tm-card-props">

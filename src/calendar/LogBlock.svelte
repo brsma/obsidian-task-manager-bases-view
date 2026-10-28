@@ -35,6 +35,9 @@
 	// click. Consumed by onClick so a move/resize never opens the journal.
 	let pointerMoved = false;
 	const DRAG_THRESHOLD_PX = 4;
+	const LONG_PRESS_MS = 500;
+	// Fingers wobble more than the drag threshold while holding still.
+	const LONG_PRESS_SLOP_PX = 10;
 
 	// Positions are relative to the visible window's start, not midnight.
 	const top = $derived(((entry.startMinutes + dragOffset - dayStartMin) / 60) * hourHeight);
@@ -72,24 +75,38 @@
 		const id = event.pointerId;
 		const onMove = (e: PointerEvent) => {
 			if (e.pointerId !== id) return;
-			if (Math.abs(e.clientY - startY) > DRAG_THRESHOLD_PX) pointerMoved = true;
+			const dy = Math.abs(e.clientY - startY);
+			if (dy > DRAG_THRESHOLD_PX) pointerMoved = true;
+			if (dy > LONG_PRESS_SLOP_PX) window.clearTimeout(pressTimer);
 			const deltaMin = snap(((e.clientY - startY) / hourHeight) * 60);
 			// Keep the whole block inside the visible window.
 			const clamped = Math.max(dayStartMin - entry.startMinutes, Math.min(dayEndMin - entry.endMinutes, deltaMin));
 			dragOffset = clamped;
 		};
-		// pointercancel (the browser took the touch over, e.g. to scroll) aborts without writing.
-		const onUp = (e: PointerEvent) => {
-			if (e.pointerId !== id) return;
+		const end = (write: boolean) => {
+			window.clearTimeout(pressTimer);
 			window.removeEventListener("pointermove", onMove);
 			window.removeEventListener("pointerup", onUp);
 			window.removeEventListener("pointercancel", onUp);
-			if (e.type === "pointerup" && dragOffset !== 0) {
+			if (write && dragOffset !== 0) {
 				context?.updateBlock(entry, entry.startMinutes + dragOffset, entry.endMinutes + dragOffset);
 			}
 			dragOffset = 0;
 			dragging = false;
 		};
+		// pointercancel (the browser took the touch over, e.g. to scroll) aborts without writing.
+		const onUp = (e: PointerEvent) => {
+			if (e.pointerId === id) end(e.type === "pointerup");
+		};
+		// Touch has no right-click: a still long-press opens the block menu instead.
+		const pressTimer =
+			event.pointerType === "touch"
+				? window.setTimeout(() => {
+						end(false);
+						pointerMoved = true; // swallow the click that may trail the press
+						openMenu(event.clientX, event.clientY);
+					}, LONG_PRESS_MS)
+				: undefined;
 		window.addEventListener("pointermove", onMove);
 		window.addEventListener("pointerup", onUp);
 		window.addEventListener("pointercancel", onUp);
@@ -137,9 +154,13 @@
 	}
 
 	function onContextMenu(event: MouseEvent) {
-		if (!context) return;
 		event.preventDefault();
 		event.stopPropagation();
+		openMenu(event.clientX, event.clientY);
+	}
+
+	function openMenu(x: number, y: number) {
+		if (!context) return;
 		const menu = new Menu();
 		menu.addItem((i) => i.setTitle(t("openInJournal")).setIcon("file-text").onClick(() => context.openEntry(entry)));
 		menu.addItem((i) => i.setTitle(t("editBlock")).setIcon("pencil").onClick(() => context.editBlock(entry)));
@@ -150,7 +171,7 @@
 				.setIcon("trash")
 				.onClick(() => context.deleteBlock(entry)),
 		);
-		menu.showAtMouseEvent(event);
+		menu.showAtPosition({ x, y });
 	}
 </script>
 

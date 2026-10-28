@@ -36,6 +36,7 @@ const dict = {
 	moveTo: { en: "Move to", zh: "移动到", de: "Verschieben nach" },
 	clearGroup: { en: "Clear group", zh: "清除分组", de: "Gruppe leeren" },
 	archive: { en: "Archive", zh: "归档", de: "Archivieren" },
+	moreOptions: { en: "More options", zh: "更多选项", de: "Weitere Optionen" },
 	uncategorized: { en: "Uncategorized", zh: "未分组", de: "Nicht kategorisiert" },
 	emptyGroupByHint: {
 		en: "Group by a property, or enable predefined columns in view options.",

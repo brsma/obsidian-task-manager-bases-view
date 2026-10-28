@@ -142,6 +142,11 @@ writes nothing. Draggable elements set `touch-action: none` so a finger drag
 moves them instead of scrolling; the calendar day columns deliberately don't, so
 the grid stays scrollable (a tap still creates a block).
 
+iOS fires no `contextmenu` on long-press, so every right-click menu needs a touch
+path: kanban cards render a ⋯ button when `Platform.isMobile`, and calendar
+blocks open their menu on a still touch long-press (`LONG_PRESS_MS`). Resize
+handles get larger hit areas under `@media (pointer: coarse)`.
+
 `timeline/Bar.svelte` additionally holds an **optimistic date override**
 (`pendingStart`/`pendingEnd`) after a commit until fresh query data lands, so the
 bar doesn't snap back to its old geometry during the write→requery round-trip.

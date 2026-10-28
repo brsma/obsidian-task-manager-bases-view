@@ -225,6 +225,13 @@
 	font-weight: var(--font-semibold);
 	margin-bottom: var(--size-4-1);
 }
+/* Mobile-only menu button (touch has no right-click); floats beside the title. */
+.tm-card .tm-card-menu {
+	float: right;
+	width: 32px;
+	height: 32px;
+	margin: calc(-1 * var(--size-4-1)) calc(-1 * var(--size-4-1)) 0 var(--size-4-1);
+}
 
 .tm-card-props {
 	display: flex;
@@ -576,6 +583,12 @@
 }
 .tm-bar-handle-start { left: -2px; }
 .tm-bar-handle-end { right: -2px; }
+/* Touch: wider grab zones, half outside the bar so short bars stay movable. */
+@media (pointer: coarse) {
+	.tm-bar-handle { width: 16px; }
+	.tm-bar-handle-start { left: -8px; }
+	.tm-bar-handle-end { right: -8px; }
+}
 
 .tm-milestone {
 	position: absolute;
@@ -758,6 +771,10 @@ button.tm-cal-title:hover {
 	position: absolute;
 	/* Touch drags move the block instead of scrolling the grid. */
 	touch-action: none;
+	/* A long-press opens the block menu, not iOS text selection. */
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
 	left: 2px;
 	right: 2px;
 	z-index: 1;
@@ -845,6 +862,10 @@ button.tm-cal-title:hover {
 	bottom: 0;
 	height: 7px;
 	cursor: ns-resize;
+}
+@media (pointer: coarse) {
+	/* Taller grab zone, capped so short blocks keep room to move. */
+	.tm-cal-block-resize { height: min(14px, 40%); }
 }
 
 /* Current-time indicator (now-line) drawn across today's column. */
