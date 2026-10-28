@@ -162,23 +162,29 @@
 		dragDelta = 0;
 		pointerMoved = false;
 		const startX = event.clientX;
+		const id = event.pointerId;
 
 		const onMove = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			const dx = e.clientX - startX;
 			if (Math.abs(dx) > DRAG_THRESHOLD_PX) pointerMoved = true;
 			// Don't shift until the gesture is a real drag, so a still press
 			// (select) doesn't jitter the bar.
 			dragDelta = pointerMoved ? dx / pxPerUnit : 0;
 		};
-		const onUp = () => {
+		// pointercancel (the browser took the touch over, e.g. to scroll) aborts without writing.
+		const onUp = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			window.removeEventListener("pointermove", onMove);
 			window.removeEventListener("pointerup", onUp);
-			commit(mode, dragDelta);
+			window.removeEventListener("pointercancel", onUp);
+			if (e.type === "pointerup") commit(mode, dragDelta);
 			dragMode = null;
 			dragDelta = 0;
 		};
 		window.addEventListener("pointermove", onMove);
 		window.addEventListener("pointerup", onUp);
+		window.addEventListener("pointercancel", onUp);
 	}
 
 	/** The date `delta` scale units away from `d`, snapped as a start. */
@@ -260,6 +266,7 @@
 			class:is-italic={row.style?.italic}
 			style:--tm-bar-accent={row.style?.color?.accent ?? null}
 			style:--tm-bar-text={row.style?.textColor?.accent ?? null}
+			style:touch-action={context.writeEnabled ? "none" : null}
 			style:left={geom.left != null ? `${geom.left}px` : null}
 			style:right={geom.right != null ? `${geom.right}px` : null}
 			style:width={geom.width != null ? `${geom.width}px` : null}
@@ -300,6 +307,7 @@
 			class:is-italic={row.style?.italic}
 			style:--tm-bar-accent={row.style?.color?.accent ?? null}
 			style:--tm-bar-text={row.style?.textColor?.accent ?? null}
+			style:touch-action={context.writeEnabled ? "none" : null}
 			style:left={geom.left != null ? `${geom.left}px` : null}
 			style:right={geom.right != null ? `${geom.right}px` : null}
 			role="button"

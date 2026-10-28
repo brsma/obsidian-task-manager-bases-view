@@ -4,7 +4,7 @@
 
 A lightweight task‑management plugin for **Obsidian [Bases](https://help.obsidian.md/bases)**. It only *renders* — your task data lives in your own markdown frontmatter / note body, and **all grouping and filtering is done by Bases**. The plugin owns no data model and hard‑codes no field names. Everything uses the `tm-` prefix.
 
-> Requires **Obsidian 1.10.2+** (the Bases view API). Desktop only.
+> Requires **Obsidian 1.10.2+** (the Bases view API). Desktop and mobile; touch support is still being refined.
 
 ## Views
 

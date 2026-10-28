@@ -4,7 +4,7 @@
 
 一个基于 **Obsidian [Bases](https://help.obsidian.md/bases)** 的轻量任务管理插件。它**只负责渲染**——任务数据存在你自己的 markdown frontmatter / 正文里，**所有分组与筛选都交给 Bases**。插件不拥有数据模型、不硬编码任何字段名。所有视图/类名统一以 `tm-` 前缀。
 
-> 需要 **Obsidian 1.10.2+**（Bases 视图 API）。仅桌面端。
+> 需要 **Obsidian 1.10.2+**（Bases 视图 API）。支持桌面端和移动端，触屏操作仍在完善中。
 
 ## 三个视图
 

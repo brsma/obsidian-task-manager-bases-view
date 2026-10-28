@@ -77,24 +77,29 @@
 		// Anchor where the pointer went down; the drag may go up or down.
 		const anchor = snap(yToMinutes(event.clientY, columnEl));
 		creating = { dayIndex, startMin: anchor, endMin: anchor + SNAP };
+		const id = event.pointerId;
 
 		const onMove = (e: PointerEvent) => {
-			if (!creating) return;
+			if (e.pointerId !== id || !creating) return;
 			const m = snap(yToMinutes(e.clientY, columnEl));
 			const lo = Math.min(anchor, m);
 			const hi = Math.max(anchor, m);
 			creating = { dayIndex, startMin: lo, endMin: Math.max(hi, lo + SNAP) };
 		};
-		const onUp = () => {
+		// The grid stays touch-scrollable, so a swipe ends in pointercancel: abort, don't create.
+		const onUp = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			window.removeEventListener("pointermove", onMove);
 			window.removeEventListener("pointerup", onUp);
-			if (creating && cal.context && creating.endMin > creating.startMin) {
+			window.removeEventListener("pointercancel", onUp);
+			if (e.type === "pointerup" && creating && cal.context && creating.endMin > creating.startMin) {
 				cal.context.createBlock(creating.dayIndex, creating.startMin, creating.endMin);
 			}
 			creating = null;
 		};
 		window.addEventListener("pointermove", onMove);
 		window.addEventListener("pointerup", onUp);
+		window.addEventListener("pointercancel", onUp);
 	}
 </script>
 

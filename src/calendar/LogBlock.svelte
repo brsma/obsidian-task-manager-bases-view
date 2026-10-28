@@ -69,17 +69,22 @@
 		dragging = true;
 		pointerMoved = false;
 		const startY = event.clientY;
+		const id = event.pointerId;
 		const onMove = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			if (Math.abs(e.clientY - startY) > DRAG_THRESHOLD_PX) pointerMoved = true;
 			const deltaMin = snap(((e.clientY - startY) / hourHeight) * 60);
 			// Keep the whole block inside the visible window.
 			const clamped = Math.max(dayStartMin - entry.startMinutes, Math.min(dayEndMin - entry.endMinutes, deltaMin));
 			dragOffset = clamped;
 		};
-		const onUp = () => {
+		// pointercancel (the browser took the touch over, e.g. to scroll) aborts without writing.
+		const onUp = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			window.removeEventListener("pointermove", onMove);
 			window.removeEventListener("pointerup", onUp);
-			if (dragOffset !== 0) {
+			window.removeEventListener("pointercancel", onUp);
+			if (e.type === "pointerup" && dragOffset !== 0) {
 				context?.updateBlock(entry, entry.startMinutes + dragOffset, entry.endMinutes + dragOffset);
 			}
 			dragOffset = 0;
@@ -87,6 +92,7 @@
 		};
 		window.addEventListener("pointermove", onMove);
 		window.addEventListener("pointerup", onUp);
+		window.addEventListener("pointercancel", onUp);
 	}
 
 	function startResize(event: PointerEvent) {
@@ -96,15 +102,19 @@
 		dragging = true;
 		pointerMoved = false;
 		const startY = event.clientY;
+		const id = event.pointerId;
 		const onMove = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			if (Math.abs(e.clientY - startY) > DRAG_THRESHOLD_PX) pointerMoved = true;
 			const deltaMin = snap(((e.clientY - startY) / hourHeight) * 60);
 			resizeDelta = Math.max(SNAP - (entry.endMinutes - entry.startMinutes), Math.min(dayEndMin - entry.endMinutes, deltaMin));
 		};
-		const onUp = () => {
+		const onUp = (e: PointerEvent) => {
+			if (e.pointerId !== id) return;
 			window.removeEventListener("pointermove", onMove);
 			window.removeEventListener("pointerup", onUp);
-			if (resizeDelta !== 0) {
+			window.removeEventListener("pointercancel", onUp);
+			if (e.type === "pointerup" && resizeDelta !== 0) {
 				context?.updateBlock(entry, entry.startMinutes, entry.endMinutes + resizeDelta);
 			}
 			resizeDelta = 0;
@@ -112,6 +122,7 @@
 		};
 		window.addEventListener("pointermove", onMove);
 		window.addEventListener("pointerup", onUp);
+		window.addEventListener("pointercancel", onUp);
 	}
 
 	function onClick(event: MouseEvent) {

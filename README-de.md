@@ -4,7 +4,7 @@
 
 Ein leichtgewichtiges Aufgabenverwaltungs-Plugin für **Obsidian [Bases](https://help.obsidian.md/bases)**. Es *rendert* ausschließlich — deine Aufgabendaten bleiben im Markdown-Frontmatter oder Notiztext, und **Gruppierung, Filterung und Sortierung übernimmt Bases**. Das Plugin besitzt kein eigenes Datenmodell und verwendet keine fest vorgegebenen Feldnamen. Alle Ansichten tragen das Präfix `tm-`.
 
-> Erfordert **Obsidian 1.10.2+** (Bases-Ansichts-API). Nur Desktop.
+> Erfordert **Obsidian 1.10.2+** (Bases-Ansichts-API). Desktop und Mobil; die Touch-Bedienung wird noch verfeinert.
 
 ## Ansichten
 

@@ -6,5 +6,5 @@
 	"description": "Kanban, timeline and weekly-log views for tasks stored in your notes, powered by Bases.",
 	"author": "vastea",
 	"authorUrl": "https://github.com/vastea",
-	"isDesktopOnly": true
+	"isDesktopOnly": false
 }

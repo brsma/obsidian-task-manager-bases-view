@@ -756,6 +756,8 @@ button.tm-cal-title:hover {
 
 .tm-cal-block {
 	position: absolute;
+	/* Touch drags move the block instead of scrolling the grid. */
+	touch-action: none;
 	left: 2px;
 	right: 2px;
 	z-index: 1;

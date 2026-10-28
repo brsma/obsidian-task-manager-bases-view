@@ -6,6 +6,19 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- The plugin is no longer desktop-only and can be installed on Obsidian mobile.
+  Touch support is still being refined: kanban card menus are not yet reachable
+  by touch.
+
+### Fixed
+
+- Timeline bars and calendar blocks can be dragged with a finger instead of
+  scrolling the view.
+- A touch drag interrupted by scrolling, or a second finger, no longer writes a
+  stray date change or opens the new-block dialog on the next tap.
+
 ## [0.10.0] - 2026-07-28
 
 ### Added

@@ -22,7 +22,9 @@ are all done by Bases; which property is the group key / start / end date comes
 from the user's choice in the Bases view options. Calendar is the sole exception
 (it has its own daily-log format convention).
 
-Requires **Obsidian 1.10.2+** (the Bases view API). `isDesktopOnly: true`.
+Requires **Obsidian 1.10.2+** (the Bases view API). `isDesktopOnly: false` — it
+also runs on Obsidian mobile, so pointer interactions must work with touch (see
+"Drag vs click").
 
 ## Common commands
 
@@ -133,6 +135,12 @@ note). Both `timeline/Bar.svelte` and `calendar/LogBlock.svelte` use a
 (`DRAG_THRESHOLD_PX`); the click handler consumes that flag to suppress the
 trailing click. **Do not** rely on the drag-delta being non-zero in the click
 handler — `pointerup` resets it before the `click` event fires.
+
+Touch: the window-level drag listeners ignore other `pointerId`s and treat
+`pointercancel` (the browser took the touch over to scroll) as an abort that
+writes nothing. Draggable elements set `touch-action: none` so a finger drag
+moves them instead of scrolling; the calendar day columns deliberately don't, so
+the grid stays scrollable (a tap still creates a block).
 
 `timeline/Bar.svelte` additionally holds an **optimistic date override**
 (`pendingStart`/`pendingEnd`) after a commit until fresh query data lands, so the
